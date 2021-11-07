@@ -6,6 +6,7 @@ reader = csv.reader(input_file, delimiter=',')
 
 #This is Sam letss gooo
 #This is Sal letss gooo
+#Sal trying another push
 
 for i in reader:
     print(i[0])
