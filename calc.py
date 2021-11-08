@@ -4,20 +4,20 @@ import csv
 #Count function done by Wesley
 #The count function returns the count of numbers in columns A and B
 def count(reader_input_data):
-    #We start the counts at -1 because we don't want to count the strings "Column A"
-    # and "Column B" in InputDataSample.csv
-    a_count = -1
-    b_count = -1
-    #Iterate through both columns in InputDataSample.csv
-    for count_data in reader_input_data:
+    #a_count and b_count hold the counts of their respective columns
+    a_count = 0
+    b_count = 0
+    #Iterate through both columns in InputDataSample.csv, without the "Column A" and
+    # "Column B" identifiers
+    for count_data in reader_input_data[1:len(reader_input_data)]:
         #For each number in that column, increment the count by 1
         if count_data[0]:
             a_count += 1
         if count_data[1]:
             b_count += 1
     #Displays the count to the user
-    print("A count: ", a_count)
-    print("B count: ", b_count)
+    print("A count:", a_count)
+    print("B count:", b_count)
     
 #Unique function done by Salvador
 def unique(reader_input_data):
@@ -33,7 +33,31 @@ def unique(reader_input_data):
 
 print(unique(reader_input_data))
 
-# def mean():
+#Mean function done by Wesley
+def mean(reader_input_data):
+    #a_mean holds mean, a_mean_sum holds the sum of numbers in column a,
+    # a_mean_count holds the count of numbers in column a, and the b counterparts
+    # hold their respective values
+    a_mean, b_mean = 0, 0
+    a_mean_sum, b_mean_sum = 0, 0
+    a_mean_count, b_mean_count = 0, 0
+    #Iterate through both columns in InputDataSample.csv, without the "Column A" and
+    # "Column B" identifiers
+    for mean_data in reader_input_data[1:len(reader_input_data)]:
+        #mean_data[0] is column a
+        if mean_data[0]:
+            a_mean_sum += int(mean_data[0])
+            a_mean_count += 1
+        if mean_data[1]:
+            b_mean_sum += int(mean_data[1])
+            b_mean_count += 1
+    #Defintion of mean
+    a_mean = a_mean_sum / a_mean_count
+    b_mean = b_mean_sum / b_mean_count
+    #Return the mean, rounded to a whole number
+    print("A mean:", round(a_mean))
+    print("B mean:", round(b_mean))
+
 # def median():
 # def mode():
 # def standard_deviation():
