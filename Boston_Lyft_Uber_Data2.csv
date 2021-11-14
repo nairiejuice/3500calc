@@ -1,0 +1,6 @@
+id,datetime,timezone,cab_type,product_id,price,distance,humidity,windSpeed,windGust,windGustTime,visibility,temperatureHigh
+474d6376-bc59-4ec9-bf57-4e6d6faeb165,12/2/2018 19:53,America/New_York,Lyft,lyft_lux,16.5,1.08,0.93,3.38,3.38,1543755600,3.052,50.8
+4f9fee41-fde3-4767-bbf1-a00e108701fb,12/3/2018 6:28,America/New_York,Lyft,lyft_line,3,1.08,0.96,1.25,2.09,1543856400,1.413,57.02
+8612d909-98b8-4454-a093-30bd48de0cb3,11/27/2018 10:45,America/New_York,Lyft,lyft_luxsuv,27.5,1.08,0.93,6.87,7.42,1543338000,2.686,46.91
+8612d909-98b8-4454-a093-30bd48de0cb3,11/27/2018 10:45,America/New_York,Lyft,lyft_luxsuv,27.5,1.08,0.93,6.87,7.42,1543338000,2.686,46.91
+fa5fb705-03a0-4eb9-82d9-7fe80872f754,12/1/2018 14:13,America/New_York,Uber,8cf7e821-f0d3-49c6-8eba-e679c0ebcf6a,,1.11,0.68,5.87,6.26,1543672800,9.91,44.66
