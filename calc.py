@@ -63,27 +63,13 @@ def mean(reader_input_data):
 # def maximum():
 
 def non_numerical(boston_lists):
-    print ("non-numerical function")
     numerical_boston_lists = []
     for column in range(len(boston_lists)):
-        # result = isinstance(boston_lists[column][0], complex)
-        # print(result)
-        # int(value)
-        #print(boston_lists[column][0])
-        #print(boston_lists[column][0].replace('.', '', 1).isdigit())
         if (boston_lists[column][0].replace('.', '', 1).isdigit()):
-            #print("hello")
-            #boston_lists.pop(column)
             numerical_boston_lists.append(boston_lists[column])
-        #print(boston_lists[column])
-        #for row in range(len(boston_lists[0])):
-        #    if (not isinstance(boston_lists[column][row], int)) or (not isinstance(boston_lists[column][row], float)) or (not isinstance(boston_lists[column][row], complex)):
-        #        boston_lists.pop(column)
-        #        break
-    return numerical_boston_lists       
+    return numerical_boston_lists 
 
 def missing_or_empty_values(boston_lists):
-    print ("missing values function")
     for column in range(len(boston_lists)):
         for row in range(len(boston_lists[0])):
             if boston_lists[column][row] == 'NA' or boston_lists[column][row] == '':
@@ -92,27 +78,46 @@ def missing_or_empty_values(boston_lists):
 
     #Get length of list inside boston_lists
 
-def search_boston_lists(boston_lists, input, column):
-    print ("search values function")
-    count = 0
-    # "Column1", "Column2", "Column3", "Column4", "Column5", "Column6", "Column7", "Column8", "DataSet"
-    if (column == "Column1"):
-    elif (column == "Column2"):
-    elif (column == "Column3"):
-    elif (column == "Column4"):
-    elif (column == "Column5"):
-    elif (column == "Column6"):
-    elif (column == "Column7"):
-    elif (column == "Column8"):
+    #print ("missing values function")
+
+def search_boston_lists(boston_lists, input, column_name):
+    total_count = 0
+    match = []
+    "Column1", "Column2", "Column3", "Column4", "Column5", "Column6", "Column7", "Column8", "DataSet"
+    if (column_name == "Column1"): column_num = 1
+    elif (column_name == "Column2"): column_num = 2
+    elif (column_name == "Column3"): column_num = 3
+    elif (column_name == "Column4"): column_num = 4
+    elif (column_name == "Column5"): column_num = 5
+    elif (column_name == "Column6"): column_num = 6
+    elif (column_name == "Column7"): column_num = 7
+    elif (column_name == "Column8"): column_num = 8
+    elif (column_name == "DataSet"): column_num = 9
     else:
         print("Error: No such column exists for search_boston_lists")
-
-    for row in range(len(boston_lists[int(column)])):
-        if boston_lists[int(column)][row] == str(input):
-            print (input, " is present 12 times in column ", column, " row ", row)
-            count += 1
-
-
+        
+    if (column_num != 9):
+        for row in range(len(boston_lists[int(column_num)])):
+            if boston_lists[int(column_num)][row] == str(input):
+                total_count += 1
+                match.append([input, column_num, row + 1])
+        print(input, "is present", str(total_count), "times in column", str(column_num))
+        
+    elif (column_num == 9):
+        for column in range(len(boston_lists)):
+            for row in range(len(boston_lists[int(column)])):
+                if boston_lists[int(column)][row] == str(input):
+                    total_count += 1
+                    match.append([input, int(column), row + 1])
+        print(input, "is present", str(total_count), "times in the data set")
+        
+    print()
+    print("Details:")
+    print("*********************************")
+    print()
+    
+    for i in match:
+        print(i[0], "is present in Column", i[1], "row", i[2])
 
 #This is the beginning of main
 input_data_file = open('InputDataSample2.csv')
@@ -187,7 +192,9 @@ missing_or_empty_values(boston_lists)
 # print(boston_lists)
 boston_lists = non_numerical(boston_lists)
 print(boston_lists)
-search_boston_lists(boston_lists, 1.08, "1")
+search_number, search_column = input("Search ").split(", ")
+search_boston_lists(boston_lists, search_number, search_column)
+# search_boston_lists(boston_lists, 1.08, "Column1")
 
 input_data_file.close()
 boston_data.close()
