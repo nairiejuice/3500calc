@@ -7,84 +7,51 @@
 
 import csv
 
-def search(num, column):
-    count = 0
-    if (column == "Column1" or column == "DataSet"):
-        for row, number in enumerate(price):
-            if float(number) == float(num):
-                count += 1
-    if (column == "Column2" or column == "DataSet"):
-        for row, number in enumerate(distance):
-            if float(number) == float(num):
-                count += 1
-    if (column == "Column3" or column == "DataSet"):
-        for row, number in enumerate(humidity):
-            if float(number) == float(num):
-                count += 1
-    if (column == "Column4" or column == "DataSet"):
-        for row, number in enumerate(windspeed):
-            if float(number) == float(num):
-                count += 1
-    if (column == "Column5" or column == "DataSet"):
-        for row, number in enumerate(windgust):
-            if float(number) == float(num):
-                count += 1
-    if (column == "Column6" or column == "DataSet"):
-        for row, number in enumerate(windgusttime):
-            if float(number) == float(num):
-                count += 1
-    if (column == "Column7" or column == "DataSet"):
-        for row, number in enumerate(visibility):
-            if float(number) == float(num):
-                count += 1
-    if (column == "Column8" or column == "DataSet"):
-        for row, number in enumerate(temperaturehigh):
-            if float(number) == float(num):
-                count += 1
-                    
-    print()
-    if (column == "DataSet"):
-        print(num, "is present", count, "times in the data set.")
-    else:
-        print(num, "is present", count, "times in column", column + ".")
+def search_boston_lists(boston_lists, input, column_name):
+    total_count = 0
+    column_num = 0
+    match = []
+    names = ["Column1", "Column2", "Column3", "Column4", "Column5",
+     "Column6", "Column7", "Column8", "DataSet"]
 
+    for i in range(len(names)):
+        if names[i] == column_name:
+            column_num = i + 1
+        
+    if (column_num < 9):
+        for row in range(len(boston_lists[int(column_num)])):
+            if boston_lists[int(column_num)][row] == str(input):
+                total_count += 1
+                match.append([input, column_num, row + 1])
+        print(input, "is present", str(total_count), "times in column", str(column_num))
+        
+    elif (column_num == 9):
+        for column in range(len(boston_lists)):
+            for row in range(len(boston_lists[int(column)])):
+                if boston_lists[int(column)][row] == str(input):
+                    total_count += 1
+                    match.append([input, int(column) + 1, row + 1])
+        print(input, "is present", str(total_count), "times in the data set")
+
+    elif (column_num == 0):
+        print("Error: No such column exists for search_boston_lists")
+        
     print()
     print("Details:")
     print("*********************************")
-
-    if (column == "Column1" or column == "DataSet"):
-        for row, number in enumerate(price):
-            if float(number) == float(num):
-                print(num, "is present in Column 1 row", row)
-    if (column == "Column2" or column == "DataSet"):
-        for row, number in enumerate(distance):
-            if float(number) == float(num):
-                print(num, "is present in Column 2 row", row)
-    if (column == "Column3" or column == "DataSet"):
-        for row, number in enumerate(humidity):
-            if float(number) == float(num):
-                print(num, "is present in Column 3 row", row)
-    if (column == "Column4" or column == "DataSet"):
-        for row, number in enumerate(windspeed):
-            if float(number) == float(num):
-                print(num, "is present in Column 4 row", row)
-    if (column == "Column5" or column == "DataSet"):
-        for row, number in enumerate(windgust):
-            if float(number) == float(num):
-                print(num, "is present in Column 5 row", row)
-    if (column == "Column6" or column == "DataSet"):
-        for row, number in enumerate(windgusttime):
-            if float(number) == float(num):
-                print(num, "is present in Column 6 row", row)
-    if (column == "Column7" or column == "DataSet"):
-        for row, number in enumerate(visibility):
-            if float(number) == float(num):
-                print(num, "is present in Column 7 row", row)
-    if (column == "Column8" or column == "DataSet"):
-        for row, number in enumerate(temperaturehigh):
-            if float(number) == float(num):
-                print(num, "is present in Column 8 row", row)
     print()
+    
+    for i in match:
+        print(i[0], "is present in Column", i[1], "row", i[2])
+
+def clean(boston_lists):
+    temp = []
+
+    for i in range(len(boston_lists)):
+        if boston_lists[i][0] != '':
+            temp.append(boston_lists[i])
+
+    return temp
 
 ###########################################################
 
@@ -204,38 +171,40 @@ def percentile(dataSet, percentile_values):
     return sorted(dataSet)[int(p)]
 
 ###########################################################
+# Main for data processing
 
-data = []
-price = []
-distance = []
-humidity = []
-windspeed = []
-windgust = []
-windgusttime = []
-visibility = []
-temperaturehigh = []
+boston_lists = [[], [], [], [], [], [], [], [], [],[], [], [], []]
 
-with open('Boston_Lyft_Uber_Data.csv') as boston:
-    for idx, line in enumerate(boston):
+with open('Boston_Lyft_Uber_Data.csv', 'r') as boston_data:
+    data = []
+
+    for idx, line in enumerate(boston_data):
         if idx > 0 and 'NA' not in line:
-                data.append(line)
-data = list(dict.fromkeys(data))       
+            data.append(line)
+    data = list(dict.fromkeys(data))
 
-for line2 in data:
-    x = line2.split(",")
-    price.append(x[5])
-    distance.append(x[6])
-    humidity.append(x[7])
-    windspeed.append(x[8])
-    windgust.append(x[9])
-    windgusttime.append(x[10])
-    visibility.append(x[11])
-    temperaturehigh.append(x[12])
+    for idx, line in enumerate(data):
+        # Skips row with column names
+        words = line.split(',')
+
+        # Delete all strings in words[] before appending
+        for j, value in enumerate(words):
+            if not value.replace('.', '', 1).strip().isdigit():
+                words[j] = ''
+        
+        for i in range(len(boston_lists)):
+            boston_lists[i].append(words[i].strip())
+                        
+boston_lists = clean(boston_lists)
 
 search_number, search_column = input("Search ").split(", ")
-search(search_number, search_column)
+search_boston_lists(boston_lists, search_number, search_column)
+print('')
+
+boston_data.close()
 
 ###########################################################
+# Main for calculator
 
 # declares top row
 topRow = ['Descriptor', 'Column A', 'Column B']
