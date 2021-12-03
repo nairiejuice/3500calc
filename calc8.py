@@ -3,8 +3,90 @@
 # ORGN: CSUB - CMPS 3500
 # FILE: calc.py
 # DATE: 11/13/2021
-
 # PYTHON IMPLEMENTATION OF A CUSTOM STATISTICS SUMMARY CALCULATOR
+
+import csv
+
+def search(num, column):
+    count = 0
+    if (column == "Column1" or column == "DataSet"):
+        for row, number in enumerate(price):
+            if float(number) == float(num):
+                count += 1
+    if (column == "Column2" or column == "DataSet"):
+        for row, number in enumerate(distance):
+            if float(number) == float(num):
+                count += 1
+    if (column == "Column3" or column == "DataSet"):
+        for row, number in enumerate(humidity):
+            if float(number) == float(num):
+                count += 1
+    if (column == "Column4" or column == "DataSet"):
+        for row, number in enumerate(windspeed):
+            if float(number) == float(num):
+                count += 1
+    if (column == "Column5" or column == "DataSet"):
+        for row, number in enumerate(windgust):
+            if float(number) == float(num):
+                count += 1
+    if (column == "Column6" or column == "DataSet"):
+        for row, number in enumerate(windgusttime):
+            if float(number) == float(num):
+                count += 1
+    if (column == "Column7" or column == "DataSet"):
+        for row, number in enumerate(visibility):
+            if float(number) == float(num):
+                count += 1
+    if (column == "Column8" or column == "DataSet"):
+        for row, number in enumerate(temperaturehigh):
+            if float(number) == float(num):
+                count += 1
+                    
+    print()
+    if (column == "DataSet"):
+        print(num, "is present", count, "times in the data set.")
+    else:
+        print(num, "is present", count, "times in column", column + ".")
+
+    print()
+    print("Details:")
+    print("*********************************")
+
+    if (column == "Column1" or column == "DataSet"):
+        for row, number in enumerate(price):
+            if float(number) == float(num):
+                print(num, "is present in Column 1 row", row)
+    if (column == "Column2" or column == "DataSet"):
+        for row, number in enumerate(distance):
+            if float(number) == float(num):
+                print(num, "is present in Column 2 row", row)
+    if (column == "Column3" or column == "DataSet"):
+        for row, number in enumerate(humidity):
+            if float(number) == float(num):
+                print(num, "is present in Column 3 row", row)
+    if (column == "Column4" or column == "DataSet"):
+        for row, number in enumerate(windspeed):
+            if float(number) == float(num):
+                print(num, "is present in Column 4 row", row)
+    if (column == "Column5" or column == "DataSet"):
+        for row, number in enumerate(windgust):
+            if float(number) == float(num):
+                print(num, "is present in Column 5 row", row)
+    if (column == "Column6" or column == "DataSet"):
+        for row, number in enumerate(windgusttime):
+            if float(number) == float(num):
+                print(num, "is present in Column 6 row", row)
+    if (column == "Column7" or column == "DataSet"):
+        for row, number in enumerate(visibility):
+            if float(number) == float(num):
+                print(num, "is present in Column 7 row", row)
+    if (column == "Column8" or column == "DataSet"):
+        for row, number in enumerate(temperaturehigh):
+            if float(number) == float(num):
+                print(num, "is present in Column 8 row", row)
+    print()
+
+###########################################################
 
 def readCSV():
     # declares two empty lists of data
@@ -121,19 +203,53 @@ def percentile(dataSet, percentile_values):
     p = (length * percentile_values) / 100
     return sorted(dataSet)[int(p)]
 
+###########################################################
+
+data = []
+price = []
+distance = []
+humidity = []
+windspeed = []
+windgust = []
+windgusttime = []
+visibility = []
+temperaturehigh = []
+
+with open('Boston_Lyft_Uber_Data.csv') as boston:
+    for idx, line in enumerate(boston):
+        if idx > 0 and 'NA' not in line:
+                data.append(line)
+data = list(dict.fromkeys(data))       
+
+for line2 in data:
+    x = line2.split(",")
+    price.append(x[5])
+    distance.append(x[6])
+    humidity.append(x[7])
+    windspeed.append(x[8])
+    windgust.append(x[9])
+    windgusttime.append(x[10])
+    visibility.append(x[11])
+    temperaturehigh.append(x[12])
+
+search_number, search_column = input("Search ").split(", ")
+search(search_number, search_column)
+
+###########################################################
+
 # declares top row
 topRow = ['Descriptor', 'Column A', 'Column B']
 # inserts "*" between rows
 spacer = ['**********', '********', '********']
 # declares labels
-labels = ['Count', "Unique", 'Mean', 'Median', 'Mode','SD', 
-                'Variance', 'Minimum', 'P20', 'P40', 
-                'P50', 'P60', 'P80', 
-                'Maximum']
+labels = ['Count', "Unique", 'Mean', 'Median', 'Mode', 'SD',
+          'Variance', 'Minimum', 'P20', 'P40',
+          'P50', 'P60', 'P80',
+          'Maximum']
 # declares value function list
-valueFunctions = [count, unique, mean, median, mode, stddev, 
-                        variance, minimum, percentile, percentile, 
-                        percentile, percentile, percentile, maximum]
+valueFunctions = [count, unique, mean, median, mode, stddev,
+                  variance, minimum, percentile, percentile,
+                  percentile, percentile, percentile, maximum]
 
 # calls function to read csv file function
 listA, listB = readCSV()
@@ -149,7 +265,7 @@ listA, listB = readCSV()
 rowFormat = "{:>20}" * 3
 # .format() interpolates methods into pre-built strings
 # displays formatted header
-# '*' is an unpacking operator that unpacks iterable values in python 
+# '*' is an unpacking operator that unpacks iterable values in python
 print(rowFormat.format(*topRow))
 # displays formatted "*" between rows
 print(rowFormat.format(*spacer))
