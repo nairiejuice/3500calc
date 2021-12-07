@@ -2,47 +2,53 @@
 # ASGT: Class Project
 # ORGN: CSUB - CMPS 3500
 # FILE: calc.py
-# DATE: 11/13/2021
+# DATE: Fall 2021
 # PYTHON IMPLEMENTATION OF A CUSTOM STATISTICS SUMMARY CALCULATOR
 
 import csv
 
-def search_boston_lists(boston_lists, input, column_name):
-    total_count = 0
-    column_num = 0
-    match = []
-    names = ["Column1", "Column2", "Column3", "Column4", "Column5",
-     "Column6", "Column7", "Column8", "DataSet"]
+try:
+    def search_boston_lists(boston_lists, input, column_name):
+        total_count = 0
+        column_num = 0
+        match = []
+        names = ["Column1", "Column2", "Column3", "Column4", "Column5",
+                 "Column6", "Column7", "Column8", "DataSet"]
 
-    for i in range(len(names)):
-        if names[i] == column_name:
-            column_num = i + 1
-        
-    if (column_num < 9):
-        for row in range(len(boston_lists[int(column_num)])):
-            if boston_lists[int(column_num)][row] == str(input):
-                total_count += 1
-                match.append([input, column_num, row + 1])
-        print(input, "is present", str(total_count), "times in column", str(column_num))
-        
-    elif (column_num == 9):
-        for column in range(len(boston_lists)):
-            for row in range(len(boston_lists[int(column)])):
-                if boston_lists[int(column)][row] == str(input):
+        for i in range(len(names)):
+            if names[i] == column_name:
+                column_num = i + 1
+
+        if (column_num < 9):
+            for row in range(len(boston_lists[int(column_num)])):
+                if boston_lists[int(column_num)][row] == str(input):
                     total_count += 1
-                    match.append([input, int(column) + 1, row + 1])
-        print(input, "is present", str(total_count), "times in the data set")
+                    match.append([input, column_num, row + 1])
+            print(input, "is present", str(total_count),
+                  "times in column", str(column_num))
 
-    elif (column_num == 0):
-        print("Error: No such column exists for search_boston_lists")
-        
-    print()
-    print("Details:")
-    print("*********************************")
-    print()
-    
-    for i in match:
-        print(i[0], "is present in Column", i[1], "row", i[2])
+        elif (column_num == 9):
+            for column in range(len(boston_lists)):
+                for row in range(len(boston_lists[int(column)])):
+                    if boston_lists[int(column)][row] == str(input):
+                        total_count += 1
+                        match.append([input, int(column) + 1, row + 1])
+            print(input, "is present", str(
+                total_count), "times in the data set")
+
+        elif (column_num == 0):
+            print("Error: No such column exists for search_boston_lists")
+
+        print()
+        print("Details:")
+        print("*********************************")
+        print()
+
+        for i in match:
+            print(i[0], "is present in Column", i[1], "row", i[2])
+except ValueError:
+    print("\nPlease give a column number within range\n")
+
 
 def clean(boston_lists):
     temp = []
@@ -55,6 +61,7 @@ def clean(boston_lists):
 
 ###########################################################
 
+
 def readCSV():
     # declares two empty lists of data
     listA = []
@@ -63,21 +70,27 @@ def readCSV():
     # 'with' allows opening and processing of file contents without
     # the need to call a close()
     # here we are assigning csv file to variable 'f'
-    with open('InputDataSample.csv', 'r') as f:
-        # iterates over file line by line
-        # i is the line number (index) start from 0
-        # enumerate returns each value along with its corresponding index
-        for index, line in enumerate(f):
-            # skips over header line
-            if index > 0:
-                # every time a ',' is found
-                # .split creates a new line
-                x = line.split(',')
-                # appends columns to lists
-                listA.append(int(x[0]))
-                listB.append(int(x[1]))
-    # returns lists
-    return listA, listB
+    try:
+        with open('InputDataSample.csv', 'r') as f:
+            # iterates over file line by line
+            # i is the line number (index) start from 0
+            # enumerate returns each value along with its corresponding index
+            for index, line in enumerate(f):
+                # skips over header line
+                if index > 0:
+                    # every time a ',' is found
+                    # .split creates a new line
+                    x = line.split(',')
+                    # appends columns to lists
+                    listA.append(int(x[0]))
+                    listB.append(int(x[1]))
+        # returns lists
+        return listA, listB
+    except FileNotFoundError:
+        print("\nPlease provide a valid file for the statistics calculator\n")
+    except IOError:
+        print("\nCorrupted file, please provide one that works\n")
+
 
 # calls function readCSV
 readCSV()
@@ -85,124 +98,134 @@ readCSV()
 # 'dataSet' set equal to csv file
 dataSet = 'InputDataSample.csv'
 
-# returns length of data
-def count(dataSet):
-    return len(dataSet)
+try:
+    # returns length of data
+    def count(dataSet):
+        return len(dataSet)
 
-# returns unique values from data in string format
-def unique(dataSet): 
-    return len((set(dataSet)))
+    # returns unique values from data in string format
+    def unique(dataSet):
+        return len((set(dataSet)))
 
-# returns mean
-def mean(dataSet):
-    return round(sum(dataSet) / len(dataSet))
+    # returns mean
+    def mean(dataSet):
+        return round(sum(dataSet) / len(dataSet))
 
-# returns median
-def median(dataSet):
-    n = len(dataSet)
-    dataSet.sort()
-    if n % 2 == 0:
-        # median for odd length data
-        median1 = dataSet[n//2]
-        # median for even length data
-        median2 = dataSet[n//2 - 1]
-        median = round((median1 + median2)/2)
-    else:
-        median = round(dataSet[n//2])
-    return median
+    # returns median
+    def median(dataSet):
+        n = len(dataSet)
+        dataSet.sort()
+        if n % 2 == 0:
+            # median for odd length data
+            median1 = dataSet[n//2]
+            # median for even length data
+            median2 = dataSet[n//2 - 1]
+            median = round((median1 + median2)/2)
+        else:
+            median = round(dataSet[n//2])
+        return median
 
-# returns mode
-def mode(dataSet):
-    # creating a dictionary called 'frequency'
-    frequency={}
-    # looping through list recording frequency
-    # of each value
-    for number in dataSet:
-        frequency.setdefault(number,0)
-        frequency[number]+=1
-    # converting values into list using
-    # python built-in '.values()' function
-    # we have multiple values that appear an
-    # equal number of times, therefore we have several modes
-    # now creating a list of those values
-    highestFrequency=max(frequency.values())
-    highestFreqLst=[]
-    for number, freq in frequency.items():
-        if freq == highestFrequency:
-            highestFreqLst.append(number)
-    # mode is any number that appears twice in this case
-    # returning the largest number that appears twice
-    # in order to only return a single value
-    return(max(highestFreqLst))
+    # returns mode
+    def mode(dataSet):
+        # creating a dictionary called 'frequency'
+        frequency = {}
+        # looping through list recording frequency
+        # of each value
+        for number in dataSet:
+            frequency.setdefault(number, 0)
+            frequency[number] += 1
+        # converting values into list using
+        # python built-in '.values()' function
+        # we have multiple values that appear an
+        # equal number of times, therefore we have several modes
+        # now creating a list of those values
+        highestFrequency = max(frequency.values())
+        highestFreqLst = []
+        for number, freq in frequency.items():
+            if freq == highestFrequency:
+                highestFreqLst.append(number)
+        # mode is any number that appears twice in this case
+        # returning the largest number that appears twice
+        # in order to only return a single value
+        return(max(highestFreqLst))
 
-# returns variance
-def variance(dataSet):
-    # number of observations
-    n = len(dataSet)
-    # mean of the data
-    mean = sum(dataSet) / n
-    # square deviations
-    deviations = [(x - mean) ** 2 for x in dataSet]
-    # variance
-    variance = round(sum(deviations) / n)
-    return variance
+    # returns variance
+    def variance(dataSet):
+        # number of observations
+        n = len(dataSet)
+        # mean of the data
+        mean = sum(dataSet) / n
+        # square deviations
+        deviations = [(x - mean) ** 2 for x in dataSet]
+        # variance
+        variance = round(sum(deviations) / n)
+        return variance
 
- # returns standard deviation   
-def stddev(dataSet):
-    return round(variance(dataSet)**0.5)
+    # returns standard deviation
+    def stddev(dataSet):
+        return round(variance(dataSet)**0.5)
 
-# returns minimum value from data
-def minimum(dataSet):
-    return min(dataSet)
+    # returns minimum value from data
+    def minimum(dataSet):
+        return min(dataSet)
 
-# returns maximum value from data
-def maximum(dataSet):
-    return max(dataSet)
+    # returns maximum value from data
+    def maximum(dataSet):
+        return max(dataSet)
 
-# each percentile calculation values
-percentile_values = [20, 40, 50, 60, 80]
+    # each percentile calculation values
+    percentile_values = [20, 40, 50, 60, 80]
 
-# each percentile calculation values
-def percentile(dataSet, percentile_values):
-    # returns percentile value from data
-    # sort data then calculate
-    length = len(dataSet)
-    p = (length * percentile_values) / 100
-    return sorted(dataSet)[int(p)]
+    # each percentile calculation values
+    def percentile(dataSet, percentile_values):
+        # returns percentile value from data
+        # sort data then calculate
+        length = len(dataSet)
+        p = (length * percentile_values) / 100
+        return sorted(dataSet)[int(p)]
+except TimeoutError:
+    print("\nData processing took too long\n")
+except ZeroDivisionError:
+    print("\nCan not divide by zero, provide a different data set\n")
 
 ###########################################################
 # Main for data processing
 
-boston_lists = [[], [], [], [], [], [], [], [], [],[], [], [], []]
+boston_lists = [[], [], [], [], [], [], [], [], [], [], [], [], []]
+try:
+    with open('Boston_Lyft_Uber_Data.csv', 'r') as boston_data:
+        data = []
 
-with open('Boston_Lyft_Uber_Data.csv', 'r') as boston_data:
-    data = []
+        for idx, line in enumerate(boston_data):
+            if idx > 0 and 'NA' not in line:
+                data.append(line)
+        data = list(dict.fromkeys(data))
 
-    for idx, line in enumerate(boston_data):
-        if idx > 0 and 'NA' not in line:
-            data.append(line)
-    data = list(dict.fromkeys(data))
+        for idx, line in enumerate(data):
+            # Skips row with column names
+            words = line.split(',')
 
-    for idx, line in enumerate(data):
-        # Skips row with column names
-        words = line.split(',')
+            # Delete all strings in words[] before appending
+            for j, value in enumerate(words):
+                if not value.replace('.', '', 1).strip().isdigit():
+                    words[j] = ''
 
-        # Delete all strings in words[] before appending
-        for j, value in enumerate(words):
-            if not value.replace('.', '', 1).strip().isdigit():
-                words[j] = ''
-        
-        for i in range(len(boston_lists)):
-            boston_lists[i].append(words[i].strip())
-                        
-boston_lists = clean(boston_lists)
+            for i in range(len(boston_lists)):
+                boston_lists[i].append(words[i].strip())
 
-search_number, search_column = input("Search ").split(", ")
-search_boston_lists(boston_lists, search_number, search_column)
-print('')
+        boston_lists = clean(boston_lists)
 
-boston_data.close()
+        search_number, search_column = input("\nSearch ").split(", ")
+        search_boston_lists(boston_lists, search_number, search_column)
+        print('')
 
+        boston_data.close()
+except FileNotFoundError:
+    print("\nPlease provide a valid file for the search function\n")
+except IOError:
+    print("\nCorrupted file\n")
+except TimeoutError:
+    print("\nData processing took too long\n")
 ###########################################################
 # Main for calculator
 
