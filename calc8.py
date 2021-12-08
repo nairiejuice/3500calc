@@ -184,12 +184,18 @@ try:
         # returns percentile value from data
         # sort data then calculate
         length = len(dataSet)
-        p = (length * percentile_values) / 100
-        return sorted(dataSet)[int(p)]
+        try:
+            p = (length * percentile_values) / 100
+        except ZeroDivisionError:
+            print("\nDivision by zero happening in percentile calculation.")
+            print("No percentile values will be printed.")
+            print("Please consider using a different data set.")
+        else:
+            return sorted(dataSet)[int(p)]
 except TimeoutError:
     print("\nData processing took too long\n")
-except ZeroDivisionError:
-    print("\nCan not divide by zero, provide a different data set\n")
+#except ZeroDivisionError:
+    #print("\nCan not divide by zero, provide a different data set\n")
 
 ###########################################################
 # Main for data processing
@@ -292,4 +298,7 @@ for i, dscrptr in enumerate(labels):
         calc_row += [valueFunctions[i](listA)]
         calc_row += [valueFunctions[i](listB)]
     # print all 'row's
-    print(rowFormat.format(*calc_row))
+    try:
+        print(rowFormat.format(*calc_row))
+    except TypeError:
+        print("\nCalculation exception results in incomplete calculator output!")
