@@ -73,7 +73,7 @@ def readCSV():
     # the need to call a close()
     # here we are assigning csv file to variable 'f'
     try:
-        with open('InputDataSample_Corrupted.csv', 'r') as f:
+        with open('InputDataSample.csv', 'r') as f:
             # iterates over file line by line
             # i is the line number (index) start from 0
             # enumerate returns each value along with its corresponding index
