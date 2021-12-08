@@ -229,7 +229,10 @@ try:
                     words[j] = ''
 
             for i in range(len(boston_lists)):
-                boston_lists[i].append(words[i].strip())
+                try:
+                    boston_lists[i].append(words[i].strip())
+                except IndexError:
+                    print("Uneven number of columns! Please consider using a different dataset!")
 
         boston_lists = clean(boston_lists)
 
