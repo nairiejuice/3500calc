@@ -236,9 +236,17 @@ try:
         print("Example: Search 2, DataSet")
         print("\nCommands in any other format will not be valid!")
 
-        search_number, search_column = input("\nSearch ").split(", ")
-        search_boston_lists(boston_lists, search_number, search_column)
-        print('')
+        # INPUT VALIDATION!!
+        # PREVENTS THE USER FROM GIVING INVALID INPUT!!
+        while True:
+            try:
+                search_number, search_column = input("\nSearch ").split(", ")
+                search_boston_lists(boston_lists, search_number, search_column)
+                break
+            except:
+                print("Oops! That was invalid input. Please try again.")
+                #search_boston_lists(boston_lists, search_number, search_column)
+                #print('')
 
         boston_data.close()
 except FileNotFoundError:
