@@ -85,7 +85,10 @@ def readCSV():
                     x = line.split(',')
                     # appends columns to lists
                     listA.append(int(x[0]))
-                    listB.append(int(x[1]))
+                    try:
+                        listB.append(int(x[1]))
+                    except ValueError:
+                        print("\nNumber of columns do not match, please consider this with your results!")
         # returns lists
         return listA, listB
     except FileNotFoundError:
