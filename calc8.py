@@ -73,7 +73,7 @@ def readCSV():
     # the need to call a close()
     # here we are assigning csv file to variable 'f'
     try:
-        with open('InputDataSample.csv', 'r') as f:
+        with open('InputDataSample_Corrupted.csv', 'r') as f:
             # iterates over file line by line
             # i is the line number (index) start from 0
             # enumerate returns each value along with its corresponding index
@@ -279,7 +279,10 @@ valueFunctions = [count, unique, mean, median, mode, stddev,
                   percentile, percentile, percentile, maximum]
 
 # calls function to read csv file function
-listA, listB = readCSV()
+try:
+    listA, listB = readCSV()
+except TypeError:
+    print("\nCan not calculate values related to invalid file!\n")
 
 # returns data in format
 # '20' is space between columns
@@ -306,18 +309,26 @@ for i, dscrptr in enumerate(labels):
     if 12 >= i >= 8:
         # i starts at 8, subtract 8 to start at beginning
         # of percentile_values list with index 0
-        calc_row += [valueFunctions[i](listA, percentile_values[i-8])]
-        calc_row += [valueFunctions[i](listB, percentile_values[i-8])]
+        try:
+            calc_row += [valueFunctions[i](listA, percentile_values[i-8])]
+            calc_row += [valueFunctions[i](listB, percentile_values[i-8])]
+        except NameError:
+            print("\nFailure to load valid file leads to lists being undefined!")
         # formatting of all other indices
         # transferring values of 'listA', 'listB' to 'valueFunctions'
         # and then to 'calc_row' for display purposes
         # transferring values to 'valueFunctions' to iterate through
         # that list
     else:
-        calc_row += [valueFunctions[i](listA)]
-        calc_row += [valueFunctions[i](listB)]
+        try:
+            calc_row += [valueFunctions[i](listA)]
+            calc_row += [valueFunctions[i](listB)]
+        except NameError:
+            print("\nFailure to load valid file leads to lists being undefined!")
     # print all 'row's
     try:
         print(rowFormat.format(*calc_row))
     except TypeError:
         print("\nCalculation exception results in incomplete calculator output!")
+    except IndexError:
+        print("\nIndex error resulting from invalid input file!")
