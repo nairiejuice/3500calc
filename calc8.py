@@ -160,17 +160,25 @@ try:
     def variance(dataSet):
         # number of observations
         n = len(dataSet)
-        # mean of the data
-        mean = sum(dataSet) / n
-        # square deviations
-        deviations = [(x - mean) ** 2 for x in dataSet]
-        # variance
-        variance = round(sum(deviations) / n)
-        return variance
-
-    # returns standard deviation
+        try:
+            # mean of the data
+            mean = sum(dataSet) / n
+            # square deviations
+            deviations = [(x - mean) ** 2 for x in dataSet]
+            # variance
+            variance = round(sum(deviations) / n)
+        except ZeroDivisionError:
+            print("\nDivision by zero taking place in variance calculation.")
+            print("No variance or SD value will be calculated.")
+        else:
+            return variance
+            # returns standard deviation
     def stddev(dataSet):
-        return round(variance(dataSet)**0.5)
+            try:
+                return round(variance(dataSet)**0.5)
+            except TypeError:
+                print("\nDivision by zero in variance leads to TypeError in SD calculation.")
+
 
     # returns minimum value from data
     def minimum(dataSet):
