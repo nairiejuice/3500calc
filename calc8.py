@@ -8,6 +8,8 @@
 
 import csv
 
+print("\nPlease wait while the program executes...")
+
 try:
     def search_boston_lists(boston_lists, input, column_name):
         total_count = 0
@@ -215,6 +217,12 @@ try:
                 boston_lists[i].append(words[i].strip())
 
         boston_lists = clean(boston_lists)
+
+        print("\nPlease give a command to search either a column by name")
+        print("or the entire dataset.")
+        print("\nExample: Search 3, Column1")
+        print("Example: Search 2, DataSet")
+        print("\nCommands in any other format will not be valid!")
 
         search_number, search_column = input("\nSearch ").split(", ")
         search_boston_lists(boston_lists, search_number, search_column)
