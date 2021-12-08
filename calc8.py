@@ -112,7 +112,11 @@ try:
 
     # returns mean
     def mean(dataSet):
-        return round(sum(dataSet) / len(dataSet))
+        try:
+            return round(sum(dataSet) / len(dataSet))
+        except ZeroDivisionError:
+            print("\nDivision by zero is taking place within mean calculation!")
+            print("No mean values will be calculated or printed.")
 
     # returns median
     def median(dataSet):
@@ -184,14 +188,8 @@ try:
         # returns percentile value from data
         # sort data then calculate
         length = len(dataSet)
-        try:
-            p = (length * percentile_values) / 100
-        except ZeroDivisionError:
-            print("\nDivision by zero happening in percentile calculation.")
-            print("No percentile values will be printed.")
-            print("Please consider using a different data set.")
-        else:
-            return sorted(dataSet)[int(p)]
+        p = (length * percentile_values) / 100
+        return sorted(dataSet)[int(p)]
 except TimeoutError:
     print("\nData processing took too long\n")
 #except ZeroDivisionError:
