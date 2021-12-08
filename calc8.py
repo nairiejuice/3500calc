@@ -89,7 +89,8 @@ def readCSV():
         # returns lists
         return listA, listB
     except FileNotFoundError:
-        print("\nPlease provide a valid file for the statistics calculator\n")
+        print("\nINVALID FILE FOR STATISTICS SUMMARY CALCULATOR!")
+        print("Please input a different file name before attempting to run the calculator.")
     except IOError:
         print("\nCorrupted file, please provide one that works\n")
 
@@ -229,7 +230,8 @@ try:
 
         boston_data.close()
 except FileNotFoundError:
-    print("\nPlease provide a valid file for the search function\n")
+    print("\nINVALID FILE FOR SEARCH FUNCTION!")
+    print("Please input a different file name before attempting to run the search function.\n")
 except IOError:
     print("\nCorrupted file\n")
 except TimeoutError:
