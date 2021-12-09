@@ -1,9 +1,0 @@
-id,datetime,timezone,cab_type,product_id,price,distance,humidity,windSpeed,windGust,windGustTime,visibility,temperatureHigh
-424553bb-7174-41ea-aeb4-fe06d4f4b9d7,12/16/2018 9:30,America/New_York,Lyft,lyft_line,5,0.44,0.68,8.66,9.17,1545015600,10,43.68
-424553bb-7174-41ea-aeb4-fe06d4f4b9d7,12/16/2018 9:30,America/New_York,Lyft,lyft_line,5,0.44,0.68,8.66,9.17,1545015600,10,43.68
-424553bb-7174-41ea-aeb4-fe06d4f4b9d7,12/16/2018 9:30,America/New_York,Lyft,lyft_line,5,0.44,0.68,8.66,9.17,1545015600,10,43.68
-424553bb-7174-41ea-aeb4-fe06d4f4b9d7,12/16/2018 9:30,America/New_York,Lyft,lyft_line,5,0.44,0.68,8.66,9.17,1545015600,10,43.68
-424553bb-7174-41ea-aeb4-fe06d4f4b9d7,12/16/2018 9:30,America/New_York,Lyft,lyft_line,5,0.44,0.68,8.66,9.17,1545015600,10,43.68
-424553bb-7174-41ea-aeb4-fe06d4f4b9d7,12/16/2018 9:30,America/New_York,Lyft,lyft_line,5,0.44,0.68,8.66,9.17,1545015600,10,43.68
-4bd23055-6827-41c6-b23b-3c491f24e74d,11/27/2018 2:00,America/New_York,Lyft,lyft_premier,11,0.44,0.94,11.98,11.98,1543291200,4.786,47.3
-981a3613-77af-4620-a42a-0c0866077d1e,11/28/2018 1:00,America/New_York,Lyft,lyft,7,0.44,0.75,7.33,7.33,1543334400,10,47.55

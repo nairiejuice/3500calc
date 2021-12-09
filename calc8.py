@@ -8,9 +8,11 @@
 import csv
 
 print("\nPlease wait while the program executes...")
-
+# try block to give errors if there's problems
 try:
+    # takes the list and the users input (search number) column name (column to search)
     def search_boston_lists(boston_lists, input, column_name):
+        # declares variables
         total_count = 0
         column_num = 0
         match = []
@@ -20,27 +22,31 @@ try:
         for i in range(len(names)):
             if names[i] == column_name:
                 column_num = i + 1
-
-        if (column_num < 9):
+        # this is set based on us knowing the number of columns
+        if (column_num <= 8):
             for row in range(len(boston_lists[int(column_num)])):
+                # if we find the value, add 1 to the total count and append the matched line to the output
                 if boston_lists[int(column_num)][row] == str(input):
                     total_count += 1
                     match.append([input, column_num, row + 1])
             print(input, "is present", str(total_count),
                   "times in column", str(column_num))
-
+        # column == 9 would be if someone entered "DataSet" and would grab the total of the whole file instead
         elif (column_num == 9):
             for column in range(len(boston_lists)):
                 for row in range(len(boston_lists[int(column)])):
+                    # if we find the value, add 1 to the total count and append the matched line to the output
                     if boston_lists[int(column)][row] == str(input):
                         total_count += 1
                         match.append([input, int(column) + 1, row + 1])
             print(input, "is present", str(
                 total_count), "times in the data set")
 
+        # handle error
         elif (column_num == 0):
             print("Error: No such column exists for search_boston_lists")
 
+        # format to user
         print()
         print("Details:")
         print("*********************************")
@@ -56,7 +62,7 @@ def clean(boston_lists):
     temp = []
 
     for i in range(len(boston_lists)):
-        if boston_lists[i][0] != '':
+        if boston_lists[i][0] != '': 
             temp.append(boston_lists[i])
 
     return temp
@@ -74,6 +80,14 @@ def readCSV():
     # here we are assigning csv file to variable 'f'
     try:
         with open('InputDataSample.csv', 'r') as f:
+        # COMMENT THIS IN FOR DEMO 
+        # FILE DOESN'T EXIST
+        #with open ('InputDataSample0.csv', 'r') as f:
+        # CORRUPTED FILE 
+        #with open ('Corrupted_InputDataSample.csv', 'r') as f:
+        # UNEVEN ROWS AND COLUMNS 
+        #with open ('Uneven_InputDataSample.csv', 'r') as f:
+        
             # iterates over file line by line
             # i is the line number (index) start from 0
             # enumerate returns each value along with its corresponding index
@@ -94,7 +108,7 @@ def readCSV():
     except FileNotFoundError:
         print("\nINVALID FILE FOR STATISTICS SUMMARY CALCULATOR!")
         print("Please input a different file name before attempting to run the calculator.")
-    except IOError:
+    except UnicodeDecodeError:
         print("\nCorrupted file, please provide one that works\n")
 
 
@@ -117,6 +131,9 @@ try:
     def mean(dataSet):
         try:
             return round(sum(dataSet) / len(dataSet))
+            # COMMENT THIS IN FOR DEMO
+            # DIVIDES BY ZERO
+            #return round(sum(dataSet) / 0)
         except ZeroDivisionError:
             print("\nDivision by zero is taking place within mean calculation!")
             print("No mean values will be calculated or printed.")
@@ -208,15 +225,27 @@ except TimeoutError:
 
 ###########################################################
 # Main for data processing
-
+# holds the columns
 boston_lists = [[], [], [], [], [], [], [], [], [], [], [], [], []]
 try:
     with open('Boston_Lyft_Uber_Data.csv', 'r') as boston_data:
-        data = []
+    # COMMENT THIS IN FOR DEMO
+    #with open('Boston_Lyft_Uber_Data0.csv', 'r') as boston_data:
+    # UNEVEN NUMBER OF ROWS
+    #with open('Uneven_Boston_Lyft_Uber_Data.csv', 'r') as boston_data:
 
+        # holds the processed data
+        data = []
+        # if idx > 0 (because the first row on boston data is the column names)
+        # and not 'NA' because NA is the input provided in the provided file for when the data is "empty"
+        # may only apply to the "Boston_Lyft_Uber_Data.csv" that we were given and possibly needs to be changed
+        #  if we are given a different data file
         for idx, line in enumerate(boston_data):
+            # if conditions met
             if idx > 0 and 'NA' not in line:
+                # add it to our data list
                 data.append(line)
+        # We want to convert the list into a dict to eliminate duplicates, then convert it back into a list
         data = list(dict.fromkeys(data))
 
         for idx, line in enumerate(data):
@@ -227,13 +256,14 @@ try:
             for j, value in enumerate(words):
                 if not value.replace('.', '', 1).strip().isdigit():
                     words[j] = ''
-
-            for i in range(len(boston_lists)):
-                try:
+            try:
+                for i in range(len(boston_lists)):
+                    #try:
                     boston_lists[i].append(words[i].strip())
-                except IndexError:
-                    print("Uneven number of columns! Please consider using a different dataset!")
-
+                    #except IndexError:
+                    #    print("Uneven number of columns! Please consider using a different dataset!")
+            except IndexError:
+                print("Uneven number of columns! Please consider using a different dataset!")
         boston_lists = clean(boston_lists)
 
         print("\nPlease give a command to search either a column by name")
@@ -254,10 +284,11 @@ try:
                 print("Oops! That was invalid input. Please try again.")
 
         boston_data.close()
+# these messages will be printed to the user if the following errors occur:
 except FileNotFoundError:
     print("\nINVALID FILE FOR SEARCH FUNCTION!")
     print("Please input a different file name before attempting to run the search function.\n")
-except IOError:
+except UnicodeDecodeError:
     print("\nCorrupted file\n")
 except TimeoutError:
     print("\nData processing took too long\n")
@@ -302,33 +333,36 @@ print(rowFormat.format(*spacer))
 # iterates over 'labels' list
 # 'i' is assigned an index number, starting with 0
 # dscrptr returns the string in 'labels'
-for i, dscrptr in enumerate(labels):
-    # each row
-    calc_row = [dscrptr]
-    # special formatting case for indices 8 - 12
-    if 12 >= i >= 8:
-        # i starts at 8, subtract 8 to start at beginning
-        # of percentile_values list with index 0
-        try:
-            calc_row += [valueFunctions[i](listA, percentile_values[i-8])]
-            calc_row += [valueFunctions[i](listB, percentile_values[i-8])]
-        except NameError:
-            print("\nFailure to load valid file leads to lists being undefined!")
-        # formatting of all other indices
-        # transferring values of 'listA', 'listB' to 'valueFunctions'
-        # and then to 'calc_row' for display purposes
-        # transferring values to 'valueFunctions' to iterate through
-        # that list
-    else:
-        try:
+try:
+    for i, dscrptr in enumerate(labels):
+        # each row
+        calc_row = [dscrptr]
+        # special formatting case for indices 8 - 12
+        if 12 >= i >= 8:
+            # i starts at 8, subtract 8 to start at beginning
+            # of percentile_values list with index 0
+            #try:
+                calc_row += [valueFunctions[i](listA, percentile_values[i-8])]
+                calc_row += [valueFunctions[i](listB, percentile_values[i-8])]
+            #except NameError:
+                #print("\nFailure to load valid file leads to lists being undefined!")
+            # formatting of all other indices
+            # transferring values of 'listA', 'listB' to 'valueFunctions'
+            # and then to 'calc_row' for display purposes
+            # transferring values to 'valueFunctions' to iterate through
+            # that list
+        else:
+            #try:
             calc_row += [valueFunctions[i](listA)]
             calc_row += [valueFunctions[i](listB)]
-        except NameError:
-            print("\nFailure to load valid file leads to lists being undefined!")
-    # print all 'row's
-    try:
-        print(rowFormat.format(*calc_row))
-    except TypeError:
-        print("\nCalculation exception results in incomplete calculator output!")
-    except IndexError:
-        print("\nIndex error resulting from invalid input file!")
+            #except NameError:
+            #print("\nFailure to load valid file leads to lists being undefined!")
+        # print all 'row's
+        try:
+            print(rowFormat.format(*calc_row))
+        except TypeError:
+            print("\nCalculation exception results in incomplete calculator output!")
+        except IndexError:
+            print("\nIndex error resulting from invalid input file!")
+except NameError:
+    print("\nFailure to load valid file leads to lists being undefined!")
