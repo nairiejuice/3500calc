@@ -52,6 +52,9 @@ def search_boston_lists(boston_lists, input, column_name):
         print(input, "is present", str(
             total_count), "times in the data set")
 
+    else:
+        print(column_name, "does not exist in dataset")
+
     # Prints matches if any were found
     if match:
         print()
