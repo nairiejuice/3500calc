@@ -5,48 +5,55 @@
 # DATE: Fall 2021
 # PYTHON IMPLEMENTATION OF A CUSTOM STATISTICS SUMMARY CALCULATOR
 
-import csv
+#import csv
 
 print("\nPlease wait while the program executes...")
 # try block to give errors if there's problems
-try:
-    # takes the list and the users input (search number) column name (column to search)
-    def search_boston_lists(boston_lists, input, column_name):
-        # declares variables
-        total_count = 0
-        column_num = 0
-        match = []
-        names = ["Column1", "Column2", "Column3", "Column4", "Column5",
-                 "Column6", "Column7", "Column8", "DataSet"]
 
-        for i in range(len(names)):
-            if names[i] == column_name:
-                column_num = i + 1
-        # this is set based on us knowing the number of columns
-        if (column_num <= 8):
+# takes the list and the users input (search number) column name (column to search)
+def search_boston_lists(boston_lists, input, column_name):
+    # declares variables
+    total_count = 0
+    column_num = 0
+    match = []
+    names = ["Column1", "Column2", "Column3", "Column4", "Column5",
+            "Column6", "Column7", "Column8", "Column9", "Column10"]
+
+    # Changes column_name into numerical value
+    for i in range(len(names)):
+        # No need to do this if user entered "DataSet", break loop
+        if column_name == "DataSet":
+            break
+        if names[i] == column_name:
+            column_num = i
+    
+    # If user's column_name input is in valid form from names list, try searching
+    if (column_name in names):
+        # Throws error if column_name doesn't exist in dataset
+        try:
             for row in range(len(boston_lists[int(column_num)])):
-                # if we find the value, add 1 to the total count and append the matched line to the output
+                # If value is found, increment count and append its location to match list
                 if boston_lists[int(column_num)][row] == str(input):
                     total_count += 1
-                    match.append([input, column_num, row + 1])
+                    match.append([input, column_num + 1, row + 1])
             print(input, "is present", str(total_count),
-                  "times in column", str(column_num))
-        # column == 9 would be if someone entered "DataSet" and would grab the total of the whole file instead
-        elif (column_num == 9):
-            for column in range(len(boston_lists)):
-                for row in range(len(boston_lists[int(column)])):
-                    # if we find the value, add 1 to the total count and append the matched line to the output
-                    if boston_lists[int(column)][row] == str(input):
-                        total_count += 1
-                        match.append([input, int(column) + 1, row + 1])
-            print(input, "is present", str(
-                total_count), "times in the data set")
+                "times in column", str(column_num + 1))
+        except IndexError:
+            print(column_name, "does not exist in dataset")
 
-        # handle error
-        elif (column_num == 0):
-            print("Error: No such column exists for search_boston_lists")
+    # column_name == "DataSet" would find all occurrences in the whole file instead
+    elif (column_name == "DataSet"):
+        for column in range(len(boston_lists)):
+            for row in range(len(boston_lists[int(column)])):
+                # If value is found, add 1 to the total count and append its found location to the output
+                if boston_lists[int(column)][row] == str(input):
+                    total_count += 1
+                    match.append([input, int(column) + 1, row + 1])
+        print(input, "is present", str(
+            total_count), "times in the data set")
 
-        # format to user
+    # Prints matches if any were found
+    if match:
         print()
         print("Details:")
         print("*********************************")
@@ -54,17 +61,18 @@ try:
 
         for i in match:
             print(i[0], "is present in Column", i[1], "row", i[2])
-except ValueError:
-    print("\nPlease give a column number within range\n")
 
-
+# Deletes any column that contained a non-numerical value
 def clean(boston_lists):
     temp = []
 
+    # Non-numerical valued columns were replaced with ''
+    # If '' is found, the column is not appended to temp
     for i in range(len(boston_lists)):
         if boston_lists[i][0] != '': 
             temp.append(boston_lists[i])
 
+    # boston_lists will be set to equal temp
     return temp
 
 ###########################################################
@@ -226,42 +234,47 @@ except TimeoutError:
 ###########################################################
 # Main for data processing
 # holds the columns
-boston_lists = [[], [], [], [], [], [], [], [], [], [], [], [], []]
+#boston_lists = [[], [], [], [], [], [], [], [], [], [], [], [], []]
+boston_lists = []
+#for i in range(len(line)):
+#    boston_lists.append([])
 try:
     with open('Boston_Lyft_Uber_Data.csv', 'r') as boston_data:
     # COMMENT THIS IN FOR DEMO
+    # FILE DOESN'T EXIST
     #with open('Boston_Lyft_Uber_Data0.csv', 'r') as boston_data:
     # UNEVEN NUMBER OF ROWS
     #with open('Uneven_Boston_Lyft_Uber_Data.csv', 'r') as boston_data:
-
-        # holds the processed data
         data = []
         # if idx > 0 (because the first row on boston data is the column names)
         # and not 'NA' because NA is the input provided in the provided file for when the data is "empty"
         # may only apply to the "Boston_Lyft_Uber_Data.csv" that we were given and possibly needs to be changed
         #  if we are given a different data file
         for idx, line in enumerate(boston_data):
-            # if conditions met
+            # idx > 0 excludes the first row with column names
+            # Also exclues rows with missing values
             if idx > 0 and 'NA' not in line:
-                # add it to our data list
                 data.append(line)
-        # We want to convert the list into a dict to eliminate duplicates, then convert it back into a list
+        
+        # Converts to dict to eliminate duplicates, then converts it back into a list
         data = list(dict.fromkeys(data))
-
         for idx, line in enumerate(data):
             # Skips row with column names
             words = line.split(',')
 
-            # Delete all strings in words[] before appending
+            # Makes boston_lists have # of lists by # of columns in csv file
+            if idx == 0:
+                for i in words:
+                    boston_lists.append([])
+                #print (boston_lists)
+            
+            # Deletes all strings in words[] before appending to new list
             for j, value in enumerate(words):
                 if not value.replace('.', '', 1).strip().isdigit():
                     words[j] = ''
             try:
                 for i in range(len(boston_lists)):
-                    #try:
                     boston_lists[i].append(words[i].strip())
-                    #except IndexError:
-                    #    print("Uneven number of columns! Please consider using a different dataset!")
             except IndexError:
                 print("Uneven number of columns! Please consider using a different dataset!")
         boston_lists = clean(boston_lists)
@@ -294,7 +307,9 @@ except TimeoutError:
     print("\nData processing took too long\n")
 ###########################################################
 # Main for calculator
-
+print("Statistics Summary Calculator:")
+print("*********************************")
+print()
 # declares top row
 topRow = ['Descriptor', 'Column A', 'Column B']
 # inserts "*" between rows
@@ -357,6 +372,7 @@ try:
             calc_row += [valueFunctions[i](listB)]
             #except NameError:
             #print("\nFailure to load valid file leads to lists being undefined!")
+
         # print all 'row's
         try:
             print(rowFormat.format(*calc_row))
