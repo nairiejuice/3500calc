@@ -8,7 +8,6 @@
 #import csv
 
 print("\nPlease wait while the program executes...")
-# try block to give errors if there's problems
 
 # takes the list and the users input (search number) column name (column to search)
 def search_boston_lists(boston_lists, input, column_name):
