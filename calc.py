@@ -5,8 +5,6 @@
 # DATE: Fall 2021
 # PYTHON IMPLEMENTATION OF A CUSTOM STATISTICS SUMMARY CALCULATOR
 
-#import csv
-
 print("\nPlease wait while the program executes...")
 
 # takes the list and the users input (search number) column name (column to search)
@@ -235,11 +233,7 @@ except TimeoutError:
 
 ###########################################################
 # Main for data processing
-# holds the columns
-#boston_lists = [[], [], [], [], [], [], [], [], [], [], [], [], []]
 boston_lists = []
-#for i in range(len(line)):
-#    boston_lists.append([])
 try:
     with open('Boston_Lyft_Uber_Data.csv', 'r') as boston_data:
     # COMMENT THIS IN FOR DEMO
@@ -268,7 +262,6 @@ try:
             if idx == 0:
                 for i in words:
                     boston_lists.append([])
-                #print (boston_lists)
             
             # Deletes all strings in words[] before appending to new list
             for j, value in enumerate(words):
