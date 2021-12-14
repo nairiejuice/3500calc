@@ -5,6 +5,8 @@
 # DATE: Fall 2021
 # PYTHON IMPLEMENTATION OF A CUSTOM STATISTICS SUMMARY CALCULATOR
 
+import sys
+
 print("\nPlease wait while the program executes...")
 
 # takes the list and the users input (search number) column name (column to search)
@@ -78,7 +80,7 @@ def clean(boston_lists):
 ###########################################################
 
 
-def readCSV():
+def readCSV(file_2_name):
     # declares two empty lists of data
     listA = []
     listB = []
@@ -87,7 +89,7 @@ def readCSV():
     # the need to call a close()
     # here we are assigning csv file to variable 'f'
     try:
-        with open('InputDataSample.csv', 'r') as f:
+        with open(file_2_name, 'r') as f:
         # COMMENT THIS IN FOR DEMO 
         # FILE DOESN'T EXIST
         #with open ('InputDataSample0.csv', 'r') as f:
@@ -121,10 +123,20 @@ def readCSV():
 
 
 # calls function readCSV
-readCSV()
+dataSet = ""
+try:
+    file_1_name = sys.argv[1]
+    file_2_name = sys.argv[2]
+    dataSet = file_2_name
+except IndexError:
+    print("\nIncorrect number of command line arguments entered")
+    print("Example: $ python3 calc.py Boston_Lyft_Uber_Data InputDataSample.csv")
+    print("Program will exit\n")
+    sys.exit(1)
 
+readCSV(dataSet)
 # 'dataSet' set equal to csv file
-dataSet = 'InputDataSample.csv'
+
 
 try:
     # returns length of data
@@ -234,8 +246,9 @@ except TimeoutError:
 ###########################################################
 # Main for data processing
 boston_lists = []
+    
 try:
-    with open('Boston_Lyft_Uber_Data.csv', 'r') as boston_data:
+    with open(sys.argv[1], 'r') as boston_data:
     # COMMENT THIS IN FOR DEMO
     # FILE DOESN'T EXIST
     #with open('Boston_Lyft_Uber_Data0.csv', 'r') as boston_data:
@@ -292,7 +305,7 @@ try:
                 print("Oops! That was invalid input. Please try again.")
 
         boston_data.close()
-# these messages will be printed to the user if the following errors occur:
+#if the following errors occur:
 except FileNotFoundError:
     print("\nINVALID FILE FOR SEARCH FUNCTION!")
     print("Please input a different file name before attempting to run the search function.\n")
@@ -321,7 +334,7 @@ valueFunctions = [count, unique, mean, median, mode, stddev,
 
 # calls function to read csv file function
 try:
-    listA, listB = readCSV()
+    listA, listB = readCSV(dataSet)
 except TypeError:
     print("\nCan not calculate values related to invalid file!\n")
 
