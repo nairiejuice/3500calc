@@ -308,17 +308,19 @@ try:
     output_file = open('clean.txt', 'w')
     line = ""
     # Adds column names to output
-    for names in column_names:        line += names + ","
-    output_file.write(line + "\n")
+    for names in column_names:        
+        line += names + ", "
+    output_file.write(line)
 
      # Adds cleaned csv data to output
     line = ""
     for row in range(len(boston_lists[1])):
         for column in range(len(boston_lists)):
-            #print(column)
-            line += boston_lists[column][row] + ","
+            line += boston_lists[column][row] + ", "
         line += "\n"
         output_file.write(line)
+        if row == 20:
+            break
         
     
 
