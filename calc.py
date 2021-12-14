@@ -6,6 +6,7 @@
 # PYTHON IMPLEMENTATION OF A CUSTOM STATISTICS SUMMARY CALCULATOR
 
 import sys
+import csv
 
 print("\nPlease wait while the program executes...")
 
@@ -246,14 +247,10 @@ except TimeoutError:
 ###########################################################
 # Main for data processing
 boston_lists = []
+column_names = []
     
 try:
     with open(sys.argv[1], 'r') as boston_data:
-    # COMMENT THIS IN FOR DEMO
-    # FILE DOESN'T EXIST
-    #with open('Boston_Lyft_Uber_Data0.csv', 'r') as boston_data:
-    # UNEVEN NUMBER OF ROWS
-    #with open('Uneven_Boston_Lyft_Uber_Data.csv', 'r') as boston_data:
         data = []
         # if idx > 0 (because the first row on boston data is the column names)
         # and not 'NA' because NA is the input provided in the provided file for when the data is "empty"
@@ -264,6 +261,8 @@ try:
             # Also exclues rows with missing values
             if idx > 0 and 'NA' not in line:
                 data.append(line)
+            elif idx == 0:
+                column_names.append(line)
         
         # Converts to dict to eliminate duplicates, then converts it back into a list
         data = list(dict.fromkeys(data))
@@ -305,6 +304,24 @@ try:
                 print("Oops! That was invalid input. Please try again.")
 
         boston_data.close()
+
+    output_file = open('clean.txt', 'w')
+    line = ""
+    # Adds column names to output
+    for names in column_names:        line += names + ","
+    output_file.write(line + "\n")
+
+     # Adds cleaned csv data to output
+    line = ""
+    for row in range(len(boston_lists[1])):
+        for column in range(len(boston_lists)):
+            #print(column)
+            line += boston_lists[column][row] + ","
+        line += "\n"
+        output_file.write(line)
+        
+    
+
 #if the following errors occur:
 except FileNotFoundError:
     print("\nINVALID FILE FOR SEARCH FUNCTION!")
